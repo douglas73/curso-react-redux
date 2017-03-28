@@ -1,32 +1,37 @@
-** Configurando babel
+** Operador Spread  ( ... )
 
 Neste exemplo:
 
 
-*Adicionar uma nova configuração em webpack.config.js;
-*Adicionando module
+*Criamos um objeto produto
+*Vamos criar um objeto novo (clone) que vai receber um objeto e retornará um novo objeto...
+*Nesta novo objeto (clone) vamos retornar o objeto passado por referencia com o operador spread ...
+> O spread ira pegar cada um dos atributos e colocar dento do objeto. 
+
 
 `
-    module: {
-        loaders: [{
-            test: /.js?$/,
-            loader: 'babel-loader',
-            exclude: /node_module,
-            query: {
-                preset: ['es2015']
-            }
-        }]
+    function clone (objeto) {
+        return { ...objeto}
     }
 `
-    *Nota:*
-    > no module,  foi especificado  na linha 14 que o babel não leia os aquivos de dentro da pasta node_module
-    > e na linha 15 foi definido o que o loader deve interpretar. Os presets são tudo que ele  vai considerar, no caso,   o ecmascrip 2015  ['es2015']
+*vamos criar um novo objeto usando const novoProduto = clone(produto)
+*logo em seguinda,  atribuimos ao atributo nome um valor |  novoProduto.nome = 'Caneta Biz Azul'
+*Exibimos o resultado no log console.log(produto, novoProduto)
 
-*Uma vez adicionado o modulo no webpack.config.js,  é necessário 
-colocar no package.json a referencia do babel (para que ele seja instalado) como dependencia.
-*não esqueça de executar npm -i --save babel-core@6.22.1 babel-loader@6.2.10 babel-preset-es2015@6.22.0 para instalar as dependencias.
-*quando executar (npm run dev) deve funcionar sem erros.
+*Neste momento o navegador vai reclamar do operador ... (spread), que ele não reconhece....
 
+  >       function clone (objeto) {
+            return { ...objeto}
+                     ^    ====> erro no navegador.
+
+
+
+*Para resolver isso, vamos parar a execução do webpack para adicionar alguns configurações.
+*Vamos abrir o webpack.config.js e adicionar um plugin do babel responsavel por isso
+*Adicionamos a linha plugins:  ['transform-object-rest-spread'] dentro da item query de module.
+*instale as dependencias:  npm i --save-dev babel-plugin-transform-object-rest-spread@6.22.0.05
+*inicie o servidor novamente:    npm run dev
+*repare que agora os 2 objetos serão exibidos no console.
 
 
  
