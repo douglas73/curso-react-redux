@@ -1,27 +1,32 @@
-** Usando ECMAScript2015 sem babel
+** Configurando babel
 
 Neste exemplo:
 
 
-*Cria-se uma classe Pessoa com um construtor chamado nome;
-*Cria-se um metodo toString() que retorna Pessoa NomePassadoPorReferencia;
-*Cria-se uma nova instancia da classe pessoa com um nome qualquer;
-*Coloca-se no log do navegador um retorno o nome passado pela classe.;
-*Exclui-se o arquivo bundle.js;
+*Adicionar uma nova configuração em webpack.config.js;
+*Adicionando module
 
- 
+`
+    module: {
+        loaders: [{
+            test: /.js?$/,
+            loader: 'babel-loader',
+            exclude: /node_module,
+            query: {
+                preset: ['es2015']
+            }
+        }]
+    }
+`
+    *Nota:*
+    > no module,  foi especificado  na linha 14 que o babel não leia os aquivos de dentro da pasta node_module
+    > e na linha 15 foi definido o que o loader deve interpretar. Os presets são tudo que ele  vai considerar, no caso,   o ecmascrip 2015  ['es2015']
 
- ** Depois...
-
- *Criou-se um arquivo chamado pessoa.js,  e copiamos a classe pessoa que estava no 
- arquivo index.js  alterando a primeira  linha para export default class Pessoa
- *No aquivo index.js foi feito o importe para que se pudesse acessar a classe 
- que agora esta no arquivo pessoa.js, usando do comando import Pessoa from './pessoa'
+*Uma vez adicionado o modulo no webpack.config.js,  é necessário 
+colocar no package.json a referencia do babel (para que ele seja instalado) como dependencia.
+*não esqueça de executar npm -i --save babel-core@6.22.1 babel-loader@6.2.10 babel-preset-es2015@6.22.0 para instalar as dependencias.
+*quando executar (npm run dev) deve funcionar sem erros.
 
 
- Porém o browser não reconhece o comando import, gerando o erro: Uncaught SyntaxError: Unexpected token import.
-
- Para resolver isso precisamos traduzir o código para que o navegador suporte o código na versão 
- antiga do js.  Por isso usamos o Babel para fazer esta tradução.(transpile)
 
  
