@@ -1,38 +1,36 @@
-** Adicionando o preset do React no webpack
+** Carregando CSS
 
 Neste exemplo:
 
 
-*Vamos adicionar o preset do React para começar usar o react
-*Com o webpack parado, vamos instalar a seguinte dependencia (react)
-> npm i --save-dev react@15.4.2
+*Vamos configurar CSS em nossa pagina
+*criamos um arquivo chamado estilo.css no mesmo diretório onde esta o index.js 
+*inserimos no index.js um import para o arquivo css: import './estilo.css'
+*Porém,  ao executar script,   o browser vai reclamar que não conseguiu interpletar o css. erro de parse.
 
-*Vamos testar se o webpack agora vai conseguir interpretar a sintaxe do react.
-*Iniciamos novamente o webpack
+*Resolvendo...*
 
-*Com o webpack rodando, modificamos o index.js,  importando (que agora funciona)
-react com a sintaxe:  import 'react'
+*Entramos no webpack.config.js e inserimos um plugin de extração de textos ExtratcTextPlugin,
+( const ExtratcTextPlugin = require('extractp-text-webpack-plugin' ) ;
 
-*alteramos o index.js e colocamos o seguinte conteúdo:
+*Adicionamos outros plugins no scritp webpack.config.js na sessão plugins.
 `
-import 'react'
-
-export default  props => (
-    <h1>Ola mundo!</h1>
-)
-
-console.log('Funcionou!')
+    plugins: [
+        new ExtratcTextPlugin('app.css')
+    ], 
 `
- 
-*Um erro é gerado pois navegador não entende a tag html dentro de js.
-*Para resolver,  entramos no webpack.config.js e colocamos o preset do react:  presets: ['react']
-*e vamos instalar a dependencia com:  npm i --save-dev babel-preset-react@6.22.0
-*iniciamos o webpack novamente e o erro não deve aparecer
-*Agora o webpack esta configurado com o basico para o uso do react;
-
-
-
-
-
-
- 
+*Também criaremos um outro loader...
+`
+        {
+           test: /\.css$/, 
+           loader: ExtratcTextPlugin.extract("style-loader", "css-loader") 
+        }
+`  
+*Uma vez criado o loader,  precisamos referenciar o arquivo que vai ser criado (app.css)
+dentro do index.html
+`
+ <link rel="stylesheet" href="app.css">
+` 
+*No terminal e instalamos as dependencias....  npm i --save-dev extract-text-webpack-plugin@.1.0.1 style-loader@0.13.1 css-loader@0.26.1
+*restartar webpack
+*A esta altura, o script funcionou perfeitamente,  porém o arquivo app.css não foi criado... para faze-lo execute o webpack ...  C:\DesenvolvimentoCode\curso-react-redux\webpack\node_modules\.bin\webpack (so for no windows)
